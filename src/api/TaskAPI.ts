@@ -38,3 +38,39 @@ export const getTaskById = async ({
     }
   }
 };
+
+export const updateTask = async ({
+  projectId,
+  taskId,
+  formData,
+}: Pick<TaskAPI, "projectId" | "taskId" | "formData">) => {
+  try {
+    const { data } = await api.put<string>(
+      `/projects/${projectId}/tasks/${taskId}`,
+      formData
+    );
+
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response?.data.error);
+    }
+  }
+};
+
+export const deleteTask = async ({
+  projectId,
+  taskId,
+}: Pick<TaskAPI, "projectId" | "taskId">) => {
+  try {
+    const { data } = await api.delete<string>(
+      `/projects/${projectId}/tasks/${taskId}`
+    );
+
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response?.data.error);
+    }
+  }
+};
