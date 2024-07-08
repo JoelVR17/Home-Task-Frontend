@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { TaskFormData } from "@/types/index";
 import TaskForm from "./TaskForm";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { createTask } from "@/api/TaskAPI";
 
@@ -33,12 +33,15 @@ export default function AddTaskModal() {
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: createTask,
     onError: (error) => {
       toast.error(error.message);
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["editProject", projectId] });
       toast.success(data);
       reset();
       navigate(location.pathname, { replace: true });
