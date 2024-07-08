@@ -2,6 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getProjectById } from "@/api/ProjectAPI";
 import AddTaskModal from "@/components/Tasks/AddTaskModal";
+import TaskList from "@/components/Tasks/TaskList";
 
 const ProjectDetailsView = () => {
   const navigate = useNavigate();
@@ -29,12 +30,13 @@ const ProjectDetailsView = () => {
           <button
             type="button"
             className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
-            onClick={() => navigate("?newTask=true")}
+            onClick={() => navigate(location.pathname + "?newTask=true")}
           >
             Add Task
           </button>
         </nav>
 
+        <TaskList tasks={data.tasks} />
         <AddTaskModal />
       </>
     );
