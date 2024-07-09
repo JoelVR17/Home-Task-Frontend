@@ -54,7 +54,6 @@ export default function AddTaskModal() {
       projectId,
     };
 
-    console.log(data);
     mutate(data);
   };
 
