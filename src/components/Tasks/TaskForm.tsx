@@ -20,7 +20,7 @@ export default function TaskForm({ errors, register }: TaskFormProps) {
           placeholder="Name of the Task"
           className="w-full p-3  border-gray-300 border"
           {...register("taskName", {
-            required: "The name is required",
+            required: "Name is required",
           })}
         />
         {errors.taskName && (
@@ -37,7 +37,7 @@ export default function TaskForm({ errors, register }: TaskFormProps) {
           placeholder="Description of the Task"
           className="w-full p-3  border-gray-300 border"
           {...register("description", {
-            required: "The task's description is required",
+            required: "Task's description is required",
           })}
         />
         {errors.description && (

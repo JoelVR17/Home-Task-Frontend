@@ -20,7 +20,7 @@ export default function ProjectForm({ errors, register }: ProjectFormProps) {
           type="text"
           placeholder="Name of the Project"
           {...register("projectName", {
-            required: "The name is required",
+            required: "Name is required",
           })}
         />
 
@@ -39,7 +39,7 @@ export default function ProjectForm({ errors, register }: ProjectFormProps) {
           type="text"
           placeholder="Name of the Client"
           {...register("clientName", {
-            required: "The client's name is required",
+            required: "Client's name is required",
           })}
         />
 
@@ -57,7 +57,7 @@ export default function ProjectForm({ errors, register }: ProjectFormProps) {
           className="w-full p-3  border border-gray-200"
           placeholder="Description of the Project"
           {...register("description", {
-            required: "The project's description is required",
+            required: "Project's description is required",
           })}
         />
 
