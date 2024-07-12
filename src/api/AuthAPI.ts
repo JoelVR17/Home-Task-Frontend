@@ -55,6 +55,9 @@ export const loginUser = async (formData: UserLoginForm) => {
     const url = "/auth/login";
     const { data } = await api.post<string>(url, formData);
 
+    // Save JWT
+    localStorage.setItem("AUTH_TOKEN", data);
+
     return data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
