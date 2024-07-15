@@ -5,6 +5,7 @@ import AddTaskModal from "@/components/Tasks/AddTaskModal";
 import TaskModalDetails from "@/components/Tasks/TaskModalDetails";
 import TaskList from "@/components/Tasks/TaskList";
 import EditTaskData from "@/components/Tasks/EditTaskData";
+import Loader from "@/components/Utils/Loader";
 
 const ProjectDetailsView = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const ProjectDetailsView = () => {
     retry: false,
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <Loader />;
   if (isError) return <Navigate to={"/404"} />;
   if (data)
     return (
