@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { toast } from "react-toastify";
+import Loader from "@/components/Utils/Loader";
 
 const DashboardView = () => {
   const { data, isLoading } = useQuery({
@@ -25,7 +26,7 @@ const DashboardView = () => {
     },
   });
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <Loader />;
 
   if (data)
     return (

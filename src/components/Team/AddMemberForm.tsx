@@ -5,6 +5,7 @@ import ErrorMessage from "../ErrorMessage";
 import { TeamMemberForm } from "@/types/index";
 import { findUserByEmail } from "@/api/TeamAPI";
 import SearchResult from "./SearchResult";
+import Loader from "../Utils/Loader";
 
 export default function AddMemberForm() {
   const initialValues: TeamMemberForm = {
@@ -69,7 +70,7 @@ export default function AddMemberForm() {
       </form>
 
       <div className="mt-10">
-        {mutation.isPending && <p className="text-center">Loading...</p>}
+        {mutation.isPending && <Loader />}
         {mutation.error && (
           <p className="text-center">{mutation.error.message}</p>
         )}

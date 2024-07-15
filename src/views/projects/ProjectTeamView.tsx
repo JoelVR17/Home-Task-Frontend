@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AddMemberModal from "@/components/Team/AddMemberModal";
 import { getProjectTeam, removeUserFromProject } from "@/api/TeamAPI";
 import { toast } from "react-toastify";
+import Loader from "@/components/Utils/Loader";
 
 export default function ProjectTeamView() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function ProjectTeamView() {
     },
   });
 
-  if (isLoading) return "Cargando...";
+  if (isLoading) return <Loader />;
   if (isError) return <Navigate to={"/404"} />;
   if (data)
     return (
