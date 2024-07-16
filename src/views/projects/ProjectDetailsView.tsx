@@ -6,8 +6,11 @@ import TaskModalDetails from "@/components/Tasks/TaskModalDetails";
 import TaskList from "@/components/Tasks/TaskList";
 import EditTaskData from "@/components/Tasks/EditTaskData";
 import Loader from "@/components/Utils/Loader";
+import { useAuth } from "@/hooks/useAuth";
+import { isManager } from "@/utils/policies";
 
 const ProjectDetailsView = () => {
+  const { data: user, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const params = useParams();
@@ -19,9 +22,9 @@ const ProjectDetailsView = () => {
     retry: false,
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading && authLoading) return <Loader />;
   if (isError) return <Navigate to={"/404"} />;
-  if (data)
+  if (data && user)
     return (
       <>
         <h1 className="text-5xl font-black">{data.projectName}</h1>
@@ -43,13 +46,16 @@ const ProjectDetailsView = () => {
           >
             Add Task
           </button>
-
-          <Link
-            className="bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
-            to={`team`}
-          >
-            Collaborators
-          </Link>
+          {isManager(data.manager, user._id) && (
+            <>
+              <Link
+                className="bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
+                to={`team`}
+              >
+                Collaborators
+              </Link>
+            </>
+          )}
         </nav>
 
         <TaskList tasks={data.tasks} />
