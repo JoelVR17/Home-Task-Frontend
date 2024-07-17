@@ -11,7 +11,8 @@ import { getTaskById, updateStatus } from "@/api/TaskAPI";
 import { toast } from "react-toastify";
 import { formatDate } from "../../utils/utils";
 import { statusTranslations } from "@/locales/es";
-import { TaskStatus } from "@/types/index";
+import { Task, TaskStatus } from "@/types/index";
+import NotesPanel from "../Notes/NotesPanel";
 
 export default function TaskModalDetails() {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ export default function TaskModalDetails() {
     retry: false,
   });
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: updateStatus,
     onError: (error) => {
@@ -41,11 +44,10 @@ export default function TaskModalDetails() {
       toast.success(data);
       queryClient.invalidateQueries({ queryKey: ["project", projectId] });
       queryClient.invalidateQueries({ queryKey: ["task"] });
+
       navigate(location.pathname, { replace: true });
     },
   });
-
-  const queryClient = useQueryClient();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value as TaskStatus;
@@ -58,6 +60,8 @@ export default function TaskModalDetails() {
     toast.error(error.message, { toastId: "error" });
     return <Navigate to={`/projects/${projectId}`} />;
   }
+
+  console.log(data);
 
   if (data)
     return (
@@ -113,15 +117,24 @@ export default function TaskModalDetails() {
                       {data.description}
                     </p>
 
-                    <p className="font-bold text-slate-600">Change History</p>
-                    {data.completedBy.map((activityLog) => (
-                      <p key={activityLog._id}>
-                        <span className="font-bold text-slate-600">
-                          {"   "} - {statusTranslations[activityLog.status]} by:
-                        </span>{" "}
-                        {activityLog.user.name}
-                      </p>
-                    ))}
+                    {data.completedBy.length ? (
+                      <>
+                        <p className="font-bold text-slate-600">
+                          Change History
+                        </p>
+                        {data.completedBy.map(
+                          (activityLog: Task["completedBy"][0]) => (
+                            <p key={activityLog._id}>
+                              <span className="font-bold text-slate-600">
+                                {"   "} -{" "}
+                                {statusTranslations[activityLog.status]} by:
+                              </span>{" "}
+                              {activityLog.user.name}
+                            </p>
+                          )
+                        )}
+                      </>
+                    ) : null}
 
                     <div className="my-5 space-y-3">
                       <label className="font-bold">Status:</label>
@@ -139,6 +152,8 @@ export default function TaskModalDetails() {
                         )}
                       </select>
                     </div>
+
+                    <NotesPanel notes={data.notes} />
                   </Dialog.Panel>
                 </Transition.Child>
               </div>
