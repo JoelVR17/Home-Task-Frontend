@@ -6,12 +6,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTask } from "@/api/TaskAPI";
 import { toast } from "react-toastify";
+import { useDraggable } from "@dnd-kit/core";
 
 type TaskCardProps = {
   task: Task;
 };
 
 const TaskCard = ({ task }: TaskCardProps) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task._id,
+  });
+
   const navigate = useNavigate();
   const params = useParams();
   const projectId = params.projectId!;
@@ -30,18 +35,30 @@ const TaskCard = ({ task }: TaskCardProps) => {
     },
   });
 
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        padding: "1.25rem",
+        backgroundColor: "#fff",
+        width: "300px",
+        display: "flex",
+        borderWidth: "1px",
+        borderColor: "rgb(203 213 225 / var(--tw-border-opacity))",
+      }
+    : undefined;
+
   return (
     <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
-      <div className="min-w-0 flex flex-col gap-y-4">
-        <button
-          type="button"
-          className="text-xl font-bold text-slate-600 text-left"
-          onClick={() => {
-            navigate(location.pathname + `?viewTask=${task._id}`);
-          }}
-        >
+      <div
+        {...listeners}
+        {...attributes}
+        ref={setNodeRef}
+        style={style}
+        className="min-w-0 flex flex-col gap-y-4"
+      >
+        <p className="text-xl font-bold text-slate-600 text-left">
           {task.taskName}
-        </button>
+        </p>
         <p className="text-slate-500">{task.description}</p>
       </div>
       <div className="flex shrink-0  gap-x-6">
