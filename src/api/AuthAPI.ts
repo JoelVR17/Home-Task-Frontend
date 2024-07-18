@@ -11,6 +11,7 @@ import {
   userSchema,
 } from "../types";
 
+// Register user
 export const createAccount = async (formData: UserRegistrationForm) => {
   try {
     const url = "/auth/create-account";
