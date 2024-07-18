@@ -61,8 +61,6 @@ export default function TaskModalDetails() {
     return <Navigate to={`/projects/${projectId}`} />;
   }
 
-  console.log(data);
-
   if (data)
     return (
       <>
